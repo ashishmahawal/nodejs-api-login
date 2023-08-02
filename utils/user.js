@@ -3,6 +3,7 @@ const DB_PATH = __dirname + "/../db/users.json";
 
 // Caller should Make sure password should be in SHA256 hash form
 const createUser = (username, password) => {
+  console.log(`Attempting to create user..... : ${username}`)
   if (!isUserExists(username)) {
     let userDB = JSON.parse(fs.readFileSync(DB_PATH));
     let userEntry = {
@@ -11,9 +12,10 @@ const createUser = (username, password) => {
     };
     userDB[username] = userEntry;
     fs.writeFileSync(DB_PATH, JSON.stringify(userDB));
-    return "User create successfully"
+    
+    return true
   } else {
-    return "Username already taken....."
+    return false
   }
 };
 
