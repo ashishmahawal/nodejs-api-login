@@ -1,9 +1,14 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const utils = require("./utils/utils");
-const userUtil = require('./utils/user')
-const middleware = require('./middleware');
-const auth = require('./auth/jwt')
+const {
+    express,
+    bodyParser,
+    utils,
+    userUtil,
+    middleware,
+    auth,
+    swaggerUi,
+    swaggerFile
+} = require('./app_requires')
+
 
 app = express();
 const port = 9000;
@@ -15,6 +20,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(middleware.loggerMiddleware);
 app.use("/login", middleware.authenticateUser);
 app.use('/user/*',middleware.validateToken);
+
+// Swagger UI
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 app.get("/", (req, res) => {
   res.send(utils.generateHash("test"));
