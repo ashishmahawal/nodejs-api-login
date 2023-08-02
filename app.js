@@ -6,13 +6,17 @@ const {
     middleware,
     auth,
     swaggerUi,
-    swaggerFile
+    swaggerFile,
+    cors
 } = require('./app_requires')
 
 
 app = express();
 const port = 9000;
-
+// Makes our resources available to anyone ,not just the same origin
+app.use(cors({
+    origin: '*'
+}));
 
 // Insert all middleware
 app.use(bodyParser.json());
@@ -31,10 +35,8 @@ app.get("/", (req, res) => {
 
 app.get("/user/data", (req, res) => {
         userId = req.body.user
-        res.send({userId}) 
-  
+        res.send({userId})
 });
-
 
 app.post("/login", (req, res) => {
   console.log("Login success");
@@ -51,7 +53,6 @@ app.post("/create", (req, res) => {
     userCreated ? res.status(201).send("User Created"):res.status(409).send("Failure,User Exists,Try different userId")
     
   });
-
 
 // Start the application server
 app.listen(port, () => {
